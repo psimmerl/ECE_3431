@@ -99,7 +99,7 @@ def Q32():
   b = -t0*log((10e-8/i0)**2)#go until power is 10e-6% of final val
   told=0
   for k in range(1, 12):
-    told = trapezoid(f,a,b,told,k)#integrate to 1024 panels
+    told = trapezoid(f,0,b,told,k)#integrate to 1024 panels
 
   print("+-----+")
   print("| P32 |")
