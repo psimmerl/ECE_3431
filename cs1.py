@@ -28,19 +28,19 @@ t0 = time.time()
 for t in range(1, Nt):
   #Iterate through the length of the bar but don't touch the ends
   # that are 0c
-	for ix in range(1, Nx-1):
-		#LINE1: Write update rule here
-		#T(x,t+dx) = T(x, t) + MU * ( T(x+dx, t) + T(x-dx, t) 
-		#   - 2*T(x,t) )
-		T[ix, 1] = T[ix, 0] + MU  * ( T[ix+1, 0] + T[ix-1, 0] - \
-		   2*T[ix,0] )
-	#Store T into Tpl so we can plot the time dependence
-	if t%300 == 0 or t == 1:
-		for ix in range(1, Nx - 1, 2): Tpl[ix, m] = T[ix, 1]
-		print(m)
-		m = m + 1
-	#Update T so T(x,t)=T(x,t+dx) for next iteration
-	for ix in range(1, Nx - 1): T[ix, 0] = T[ix, 1]
+    for ix in range(1, Nx-1):
+        #LINE1: Write update rule here
+        #T(x,t+dx) = T(x, t) + MU * ( T(x+dx, t) + T(x-dx, t) 
+        #   - 2*T(x,t) )
+        T[ix, 1] = T[ix, 0] + MU  * ( T[ix+1, 0] + T[ix-1, 0] - \
+           2*T[ix,0] )
+    #Store T into Tpl so we can plot the time dependence
+    if t%300 == 0 or t == 1:
+        for ix in range(1, Nx - 1, 2): Tpl[ix, m] = T[ix, 1]
+        print(m)
+        m = m + 1
+    #Update T so T(x,t)=T(x,t+dx) for next iteration
+    for ix in range(1, Nx - 1): T[ix, 0] = T[ix, 1]
 print("time:",time.time()-t0)
 
 import matplotlib.pyplot as p
@@ -53,8 +53,8 @@ X, Y = meshgrid(x, y)
 
 #Find corresponding T values in the mesh grid
 def functz(Tpl):
-	Z = Tpl[X, Y]
-	return Z
+    Z = Tpl[X, Y]
+    return Z
 
 Z = functz(Tpl)
 #Create figure and plot X Y Z
@@ -65,7 +65,7 @@ ax.set_xlabel('time')
 ax.set_ylabel('Position')
 ax.set_zlabel('Temperature')
 fig.suptitle("Heat Equation: Finite Difference")
-p.savefig("HE_finite_difference.png")
+p.savefig("figures/HE_finite_difference.png")
 p.show()
 
 
@@ -82,32 +82,32 @@ a,   b,  c,  d = zeros((Max),float), zeros((Max),float), \
 x, t = zeros((Max),float), zeros((Max,Max),float)
 
 def Tridiag(a, b, c, d, Ta, Tb, Tc, Td, x, n):
-	Max = 51
-	#Create array for solved upper triangular values h and p
-	#h will be primary diag of A, p is the new B
-	h, p = zeros((Max),float), zeros((Max),float)
-	for i in range(1, n+1):
-	  #reallocate data
-		a[i], b[i], c[i], d[i] = Ta[i], Tb[i], Tc[i], Td[i]
-	#solve for h1 and p1
-	h[1], p[1] = c[1]/d[1], b[1]/d[1]
-	for i in range(2, n+1):
-		#LINE0: Put in equation for solving for h[i]
-		#recursively find h_i from h1 to hn
-		h[i] = c[i] / ( d[i] - a[i] * h[i-1] )
-		#LINE1: Put in equation for solving for p[i]
-		#recursively find p_i from p1 to pn
-		p[i] = ( b[i] - a[i] * p[i-1] ) / ( d[i] - a[i] * h[i-1] )
-	#we know last row in A has only one value of 1 in col N so 
-	#   solve for Xn=pn
-	x[n] = p[n]
-	#LINE2: Put in equation for solving for x[i]
-	#for i in range(1,n): x[i] = p[i] - h[i]*x[i-1]
-	#use backwards substitution fron x[n-1] to x[1] knowing x[n] 
-	#   is p[n]
-	#each row has 1 on main diagonal and hi on main diag+1 => 
-	#   x[i]+h[i]*x[i+1]=p[i]
-	for i in range(n-1,0,-1): x[i] = p[i] - h[i]*x[i+1]
+    Max = 51
+    #Create array for solved upper triangular values h and p
+    #h will be primary diag of A, p is the new B
+    h, p = zeros((Max),float), zeros((Max),float)
+    for i in range(1, n+1):
+      #reallocate data
+        a[i], b[i], c[i], d[i] = Ta[i], Tb[i], Tc[i], Td[i]
+    #solve for h1 and p1
+    h[1], p[1] = c[1]/d[1], b[1]/d[1]
+    for i in range(2, n+1):
+        #LINE0: Put in equation for solving for h[i]
+        #recursively find h_i from h1 to hn
+        h[i] = c[i] / ( d[i] - a[i] * h[i-1] )
+        #LINE1: Put in equation for solving for p[i]
+        #recursively find p_i from p1 to pn
+        p[i] = ( b[i] - a[i] * p[i-1] ) / ( d[i] - a[i] * h[i-1] )
+    #we know last row in A has only one value of 1 in col N so 
+    #   solve for Xn=pn
+    x[n] = p[n]
+    #LINE2: Put in equation for solving for x[i]
+    #for i in range(1,n): x[i] = p[i] - h[i]*x[i-1]
+    #use backwards substitution fron x[n-1] to x[1] knowing x[n] 
+    #   is p[n]
+    #each row has 1 on main diagonal and hi on main diag+1 => 
+    #   x[i]+h[i]*x[i+1]=p[i]
+    for i in range(n-1,0,-1): x[i] = p[i] - h[i]*x[i+1]
 
 #create physical device parameters
 width, height, ct= 1., .1, 1.
@@ -121,7 +121,7 @@ r = ct**2 * k / ( h**2 )
 
 #Set the edges to 0c
 for j in range(1,m+1):
-	t[1,j], t[n,j] = 0., 0. #Boundary Condition
+    t[1,j], t[n,j] = 0., 0. #Boundary Condition
 #LINE3:t[i][i] = Initial Condition = 100c
 for i in range(2,   n): t[i,1]=100
 #Set the main diagonal to 2/r + 2 => From Crank-nicolson PDE sln
@@ -137,14 +137,14 @@ print("I'm working, wait for fig while I count to 50")
 t1 = time.time()
 #Iterate through matrix , dont touch BC
 for j in range(2, m+1):
-	print(j)
-	for i in range(2, n):
-	  #reset Tb for next iteration
-		Tb[i] = t[i-1,j-1] + t[i+1,j-1] + (2/r - 2) * t[i,j-1]
-	#solve matrix
-	Tridiag(a, b, c, d, Ta, Tb, Tc, Td, x, n)
-	#store temp then into temp now
-	for i in range(1, n+1): t[i,j] = x[i]
+    print(j)
+    for i in range(2, n):
+      #reset Tb for next iteration
+        Tb[i] = t[i-1,j-1] + t[i+1,j-1] + (2/r - 2) * t[i,j-1]
+    #solve matrix
+    Tridiag(a, b, c, d, Ta, Tb, Tc, Td, x, n)
+    #store temp then into temp now
+    for i in range(1, n+1): t[i,j] = x[i]
 print("Finished")
 print("time:",time.time()-t1)
 #set up plotting matrix
@@ -161,6 +161,6 @@ ax.set_ylabel('Position')
 ax.set_xlabel('time')
 ax.set_zlabel('Temperature')
 fig.suptitle("Heat Equation: Crank-Nicolson")
-p.savefig("HE_crank_nicolson.png")
+p.savefig("figures/HE_crank_nicolson.png")
 p.show()
 

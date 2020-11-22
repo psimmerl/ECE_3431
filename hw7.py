@@ -28,7 +28,7 @@ def P41():
     plt.xlim(0,5)
     
   plt.gcf().set_size_inches(18.5, 10.5)
-  plt.savefig('hw7p41.png',bbox_inches='tight')
+  plt.savefig("figures/"+'hw7p41.png',bbox_inches='tight')
 
 #P42: Page 288 Problem 5
 #Write a function that returns an array containing the Y(x) 
@@ -65,7 +65,7 @@ def P42():
     plt.xlim(0,0.2)
     
   plt.gcf().set_size_inches(18.5, 10.5)
-  plt.savefig('hw7p42.png',bbox_inches='tight')
+  plt.savefig("figures/"+'hw7p42.png',bbox_inches='tight')
   return Y[:,0]
 
 
@@ -112,7 +112,7 @@ def integrate(F,x,y,xStop,h,tol=1.e-6,max_steps=100000):
       hNext = h
     else:
       hNext = 0.9*h*(tol/e)**0.2
-		#Accept integration if e is in tol:
+        #Accept integration if e is in tol:
     if e <= tol:
       y = y + dy
       x = x + h
@@ -160,7 +160,7 @@ def P43():
     plt.xlim(min(X),max(X))
     
   plt.gcf().set_size_inches(18.5, 10.5)
-  plt.savefig('hw7p43.png',bbox_inches='tight')
+  plt.savefig("figures/"+'hw7p43.png',bbox_inches='tight')
   return Y[:,0]
 
 
@@ -178,8 +178,20 @@ def P44():
   # completion due to instability!
    
    #Decrease tol for RK5 to try to find soln
-   #X, Y = integrate(F, 0, np.array([1,0]), 3.5, 0.1, tol=1e-1) 
-  X, Y = hw6.integrate(F, 0, np.array([1,0]), 3.5, 0.1) 
+  X, Y = integrate(F, 0, np.array([1,0]), 3.5, 0.1, tol=1e-1) 
+  plt.clf()
+  for i in range(2):
+    plt.subplot(2,1,i+1)
+    plt.plot(X,Y[:,i],linewidth=3)
+    #plt.plot(X, [YE,YEd][i])
+    plt.title("Problem 44")
+    plt.grid(True)
+    plt.xlabel('x'); plt.ylabel(['y','y\''][i])
+    plt.xlim(0,3.5)
+    
+  plt.gcf().set_size_inches(18.5, 10.5)
+  plt.savefig("figures/"+'hw7p44_lowtol_manysteps.png',bbox_inches='tight')
+  X, Y = hw6.integrate(F, 0, np.array([1,0]), 3.5, 0.1) #RK4
   
   plt.clf()
   for i in range(2):
@@ -192,11 +204,8 @@ def P44():
     plt.xlim(0,3.5)
     
   plt.gcf().set_size_inches(18.5, 10.5)
-  plt.savefig('hw7p44_test.png',bbox_inches='tight')
+  plt.savefig("figures/"+'hw7p44_runkut4.png',bbox_inches='tight')
   return Y[:,0]
-
-
-  return None
 
 
 

@@ -72,7 +72,7 @@ def myPlot(X, Y, xs, ys, title, fname, xlabel='X', ylabel='Y'):
   plt.xlabel(xlabel)
   plt.ylabel(ylabel)
   plt.title(title)
-  plt.savefig(fname)
+  plt.savefig("figures/"+fname)
   #plt.show()
 
 print("+----------------+")
@@ -179,7 +179,7 @@ for i in range(len(ys2)):
   xs2[i] = evalSpline(Y,X,k,ys2[i])
 myPlot(Y,X,ys2,xs2,'Case Study 2 Problem 4 Wide View','cs2p4_wide.png','Y','X')
 plt.xlim(min(ys2),max(ys2))
-plt.savefig('cs2p4_wide.png')
+plt.savefig('figures/cs2p4_wide.png')
 
 
 
